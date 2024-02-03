@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>设置 - 蕉饼的小站</title>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="shortcut icon" href="img/favicon.ico" type="image/x-icon">
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+        <script type="text/javascript">
+            (function(){
+               emailjs.init("xj8nyEySYwVrb0Kxc");
+            })();
+        </script>
+    </head>
+    <body>
+        <div class="bg">
+            <div class="background-img">
+                <div class="blur"></div>
+            </div>
+            <div class="background-main">
+                <div class="center" onclick="javascript:closeSelector()">
+                    <div class="settings-center">
+                        <p class="setting-text">语言</p>
+                    </div>
+                    <p class="websiteTime"></p>
+                </div>
+                <div class="setting-button" onclick="javascript:languageSet()">中文<img class="selectorImg" src="img/selector.svg"></img></div>
+                <div class="languageSelector">
+                    <p class="selectorChoice" onclick="javascript:languageSave('zh')">中文</p>
+                    <p class="selectorChoice" onclick="javascript:languageSave('zh-SR')">45%二简中文</p>
+                    <p class="selectorChoice" onclick="javascript:languageSave('en')">English</p>
+                </div>
+                <div class="top">
+                    <p class="homepage-text">设置</p>
+                    <div id="return">
+                        <a href="javascript:history.go(-1)">
+                            <div class="button1 return">
+                                <img class="return-img" src="img/return.svg"></img>
+                            </div>
+                        </a>
+                        <a href="javascript:history.go(1)">
+                            <div class="button1 return2">
+                                <img class="return-img" src="img/return.svg"></img>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="report"></div>
+                </div>
+                <div class="tabs">
+                    <h1 class="tab-text">导航栏</h1>
+                    <a href="/">
+                        <div class="tab-hidden tab-home">
+                            <img src="img/house.svg" class="tab-img-home"></img>
+                            <p class='tab-texts'>主页</p>
+                        </div>
+                    </a>
+                    <a href="works">
+                        <div class="tab-hidden tab-works">
+                            <img src="img/square.and.pencil.svg" class="tab-img-works"></img>
+                            <p class='tab-texts'>作品集</p>
+                        </div>
+                    </a>
+                    <a href="fav">
+                        <div class="tab-hidden tab-fav">
+                            <img src="img/heart.svg" class="tab-img-fav"></img>
+                            <p class='tab-texts'>收藏夹</p>
+                        </div>
+                    </a>
+                    <a href="images">
+                        <div class="tab-hidden tab-img">
+                            <img src="img/photo.svg" class="tab-img-img"></img>
+                            <p class='tab-texts'>相册</p>
+                        </div>
+                    </a>
+                    <div class="tab-s tab-settings">
+                        <img src="img/option.blue.svg" class="tab-img-settings"></img>
+                        <p class='tab-texts-s'>设置</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="screenRev"></div>
+        <script src="js/index.js"></script>
+        <script src="js/timeCal.js"></script>
+        <script src="js/ie.js"></script>
+    </body>
+</html>
