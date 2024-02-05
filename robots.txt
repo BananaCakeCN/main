@@ -7,3 +7,5 @@ Disallow: /files/
 Disallow: /js/
 Disallow: /404.html
 Disallow: /CNAME
+
+Sitemap: https://pyongyang.bananacake.top/sitemap.xml
