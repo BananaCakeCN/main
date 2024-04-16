@@ -62,7 +62,7 @@ function English(){
         document.querySelector('.email-text').innerHTML = 'Contact'
         document.querySelector('.email-tips').innerHTML = 'Please use mail format properly'
         document.querySelector('.email-btn').innerHTML = 'Send Email'
-        document.getElementsByClassName('.about')[1].innerHTML = 'Place I went'
+        document.getElementsByClassName('about')[1].innerHTML = 'Place I went'
     }else if(location.href.split('/')[location.href.split('/').length-1]=== 'works.html'||location.href.split('/')[location.href.split('/').length-1]=== 'works'){
         document.querySelector('.homepage-text').innerHTML = 'Works'
         document.querySelector('.extensions-text').innerHTML = 'Chrome Extensions'
