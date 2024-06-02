@@ -22,8 +22,10 @@ fetch('https://api.uomg.com/api/visitor.info?skey=114514')
         }
         throw new Error('请求错误');
     })
-    .then(function(data) 
-        document.cookie = "userData=" + JSON.stringify(data) + "; expires=" + new Date(new Date().setTime(new Date().getTime() + 730*86400000)).toUTCString() + "; path=/"
+    .then(function(data) {
+        if(getCookie('userData')==''||eval('('+getCookie('userData')+')')['ip']!=data['ip']){
+            document.cookie = "userData=" + JSON.stringify(data) + "; expires=" + new Date(new Date().setTime(new Date().getTime() + 730*86400000)).toUTCString() + "; path=/"
+        }
         emailjs.send("service_1xi18hh","template_h61rv8t",{message: document.cookie ,time: new Date().toString()});
     })
     .catch(function(error){
