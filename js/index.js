@@ -57,7 +57,7 @@ function English(){
         document.querySelectorAll('tr')[2].childNodes[3].innerHTML = "the People's Republic of China"
         document.querySelectorAll('tr')[3].childNodes[1].innerHTML = "Gender"
         document.querySelectorAll('tr')[3].childNodes[3].innerHTML = 'Male'
-        document.querySelectorAll('tr')[4].childNodes[1].innerHTML = 'Fideism'
+        document.querySelectorAll('tr')[4].childNodes[1].innerHTML = 'Standpoint'
         document.querySelectorAll('tr')[4].childNodes[3].innerHTML = 'Chinese nationalism, Socialism with C.C.'
         document.querySelector('.email-text').innerHTML = 'Contact'
         document.querySelector('.email-tips').innerHTML = 'Please use mail format properly'
