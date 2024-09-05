@@ -105,8 +105,8 @@ function SEChinese(){
     }else if(location.href.split('/')[location.href.split('/').length-1]=== 'works.html'||location.href.split('/')[location.href.split('/').length-1]=== 'works'){
         document.querySelector('.homepage-text').innerHTML = '作品亼'
         document.getElementsByClassName('work-title')[8].innerHTML = '千桔果自定义头像'
-        document.getElementsByClassName('work-title')[19].innerHTML = 'Box3铁辺'
-        document.getElementsByClassName('work-info')[16].innerHTML = '已完结 - 2021.2 在官方㣊复前，解决Cookie缓存高于1GB的问题'
+        document.getElementsByClassName('work-title')[21].innerHTML = 'Box3铁辺'
+        document.getElementsByClassName('work-info')[17].innerHTML = '已完结 - 2021.2 在官方㣊复前，解决Cookie缓存高于1GB的问题'
     }else if(location.href.split('/')[location.href.split('/').length-1]=== 'fav.html'||location.href.split('/')[location.href.split('/').length-1]=== 'fav'){
         document.querySelector('.homepage-text').innerHTML = '收䒙夹'
         document.querySelector('.python-work-text').innerHTML = '普通文件收䒙'
