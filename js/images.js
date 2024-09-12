@@ -13,6 +13,12 @@ function getCookie(cname){
      }
     return "";
 }
+function getUrl(root, i){
+    if(i > 112 && root == 'photos/'){
+        return 'https://assets.bananacake.top/' + root + i + '.png';
+    }
+    return 'https://assets.bananacake.top/' + root + i + '.png';
+}
 async function imageClickOnce(index){
     if(document.documentElement.clientWidth < document.documentElement.clientHeight){
         document.getElementsByClassName('photo')[albumLength-index].style.cssText = 'animation: imageOpen 0.5s forwards;'
@@ -51,7 +57,7 @@ function loadMoreImage(){
         loadMore = ''
     }
     for(var i = displayed; i>displayed2;i--){
-        load = load + '<div class="photo" onclick="imageClickOnce('+i+')"><img src="https://assets.bananacake.top/'+root+i+'.png" class="image"></img></div>'
+        load = load + '<div class="photo" onclick="imageClickOnce('+i+')"><img src="' + getUrl(root, i) + '" class="image"></img></div>'
     }
     document.querySelector('.center').innerHTML = load + loadMore
     for (var i = 0;i < document.getElementsByClassName('photo').length; i++){
@@ -108,7 +114,7 @@ for(var i = albumLength; i>displayed;i--){
     }else{
         loadMore = ''
     }
-    load = load + '<div class="photo" onclick="imageClickOnce('+i+')"><img src="https://assets.bananacake.top/'+root+i+'.png" class="image"></img></div>'
+    load = load + '<div class="photo" onclick="imageClickOnce('+i+')"><img src="' + getUrl(root, i) + '" class="image"></img></div>'
 }
 document.querySelector('.center').innerHTML = load + loadMore
 for (var i = 0;i < document.getElementsByClassName('photo').length; i++){
