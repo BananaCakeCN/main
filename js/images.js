@@ -14,8 +14,8 @@ function getCookie(cname){
     return "";
 }
 function getUrl(root, i){
-    if(i > 112 && root == 'photos/'){
-        return 'https://assets.bananacake.top/' + root + i + '.png';
+    if(i > 111 && root == 'photos/'){
+        return 'https://assets2.bananacake.top/' + root + i + '.png';
     }
     return 'https://assets.bananacake.top/' + root + i + '.png';
 }
