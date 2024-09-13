@@ -124,13 +124,13 @@ for (var i = 0;i < document.getElementsByClassName('photo').length; i++){
         await sleep(500)
         imageIsOpen = true
         document.querySelector('.photoViewer').style.cssText = 'height: 100%;width: 100%;background-color: #FFF;display: flex;'
-        document.querySelector('.photoViewer').innerHTML = '<img style="max-height: '+(document.documentElement.clientHeight-116)+'px;" src="'+this.childNodes[0].src+'" class="ViewerImage"></img><div class="imageTop"><p class="imageInfo">'+images[this.childNodes[0].src.split('/')[this.childNodes[0].src.split('/').length-1].split('.')[0]][1]+'</p><p class="imageInfo2">'+images[this.childNodes[0].src.split('/')[this.childNodes[0].src.split('/').length-1].split('.')[0]][0]+'</p><div class="button1 return imageReturn" onclick="closeImage()"><img class="return-img2" src="img/return.svg"></div><div class="button1 imageDetails" onclick="imageDetails(`' + root + '`, ' + i + ')"><img class="details-img" src="img/info.circle.svg"></div></div><div id="imgDetails" style="width: 0; height: 0;"></div>'
+        document.querySelector('.photoViewer').innerHTML = '<img style="max-height: '+(document.documentElement.clientHeight-116)+'px;" src="'+this.childNodes[0].src+'" class="ViewerImage"></img><div class="imageTop"><p class="imageInfo">'+images[this.childNodes[0].src.split('/')[this.childNodes[0].src.split('/').length-1].split('.')[0]][1]+'</p><p class="imageInfo2">'+images[this.childNodes[0].src.split('/')[this.childNodes[0].src.split('/').length-1].split('.')[0]][0]+'</p><div class="button1 return imageReturn" onclick="closeImage()"><img class="return-img2" src="img/return.svg"></div><div class="button1 imageDetails" onclick="imageDetails(`' + this.childNodes[0].src + '`)"><img class="details-img" src="img/info.circle.svg"></div></div><div id="imgDetails" style="width: 0; height: 0;"></div>'
         if(document.documentElement.clientWidth < document.documentElement.clientHeight){
             document.querySelector('.ViewerImage').style.cssText = 'max-height: '+(document.documentElement.clientHeight-166)+'px;bottom: 50px;'
         }
     }
 }
-async function imageDetails(root, index){
+async function imageDetails(src){
     if(document.getElementById('imgDetails').style.cssText == 'width: 0px; height: 0px;'){
         document.getElementById('imgDetails').style.cssText = 'width: 300px; position: absolute; right: 13px; background-color: #fff; border: #e6e6e6 1px solid; border-radius: 7px; top: 113px; padding: 10px; color: #404040;'
         document.getElementById('imgDetails').innerHTML = '<b>设备</b><p>--</p><b>时间</b><p>----年--月--日 --:--:--</p><b>位置（中国大陆不可用）</b><div id="map"></div>'
