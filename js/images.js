@@ -130,7 +130,7 @@ for (var i = 0;i < document.getElementsByClassName('photo').length; i++){
         }
     }
 }
-async function imageDetails(src){
+async function imageDetails(url){
     if(document.getElementById('imgDetails').style.cssText == 'width: 0px; height: 0px;'){
         document.getElementById('imgDetails').style.cssText = 'width: 300px; position: absolute; right: 13px; background-color: #fff; border: #e6e6e6 1px solid; border-radius: 7px; top: 113px; padding: 10px; color: #404040;'
         document.getElementById('imgDetails').innerHTML = '<b>设备</b><p>--</p><b>时间</b><p>----年--月--日 --:--:--</p><b>位置（中国大陆不可用）</b><div id="map"></div>'
