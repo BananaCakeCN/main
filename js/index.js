@@ -98,7 +98,7 @@ function SEChinese(){
     document.getElementsByClassName('tab-texts')[1].innerHTML = '作品亼'
     document.getElementsByClassName('tab-texts')[2].innerHTML = '收䒙夹'
     if(location.href.split('/')[location.href.split('/').length-1]=== 'index.html'||location.href.split('/')[location.href.split('/').length-1]=== ''){
-        document.querySelectorAll('tr')[1].childNodes[1].innerHTML = '祖笈'
+        document.querySelectorAll('tr')[1].childNodes[1].innerHTML = '笈贯'
         document.querySelectorAll('tr')[2].childNodes[1].innerHTML = '国笈'
         document.querySelectorAll('tr')[4].childNodes[1].innerHTML = '伩仰主义'
         document.querySelector('.email-tips').innerHTML = '请务必使用规范书面语及书伩格式'
