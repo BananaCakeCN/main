@@ -5,4 +5,4 @@ function getDomainDay(){
     return Math.floor((new Date(new Date().toUTCString()).getTime()-new Date("2023-09-26 06:20:23").getTime())/1000/(3600*24))
 }
 const element = document.getElementsByClassName('websiteTime')[0]
-element.innerHTML = '此站已运行 ' + getCreateDay() + ' 天，域名已注册 ' + getDomainDay() + ' 天'
+element.innerHTML = '页面已运行 ' + getCreateDay() + ' 日，域名 "bananacake.top" 已注册 ' + getDomainDay() + ' 日'
