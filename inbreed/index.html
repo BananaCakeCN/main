@@ -511,7 +511,21 @@
                 </select>`;
                 document.getElementById('selector').onchange = function(){
                     document.getElementsByTagName('option')[0].remove();
-                    console.log(this.selectedIndex);
+                    var target;
+                    if(this.selectedIndex){
+						target = homogenPartner;
+						sample[1][sample[1].length - 1].partner = [2, 1];
+	                    sample[1][0].partner = [sample[1][sample[1].length - 1].gen, sample[1][sample[1].length - 1].id];
+					}else{
+						target = sample[0][sample[1][0].male ? 1 : 0];
+						const temp = sample[0][1];
+						temp.partner = [2, 1];
+						sample[1].push(temp);
+	                    sample[1][0].partner = [temp.gen, temp.id];
+					}
+                    document.getElementById('canvas').innerHTML = graph(sample);
+                    document.getElementById('text').innerText = 'You selected "' + romanNum[target['gen']] + target['id'] + '" as "II1"\'s partner.';
+					this.remove();
                 }
             }
         </script>
