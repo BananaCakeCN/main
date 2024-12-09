@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8"/>
+        <title>Inbreeding - Cause and Consequence</title>
+        <style>
+            body{
+                font-family: Helvetica Neue, PingFangSC-Regular ! important;
+                margin: 0;
+            }
+            .page{
+                position: fixed;
+                height: 100%;
+                width: 100%;
+                background-color: #fff;
+            }
+            @keyframes close {
+                100%{
+                    transform: translateY(-50px);
+                    opacity: 0;
+                }
+            }
+            h1{
+                font-size: 42px;
+            }
+            h3{
+                font-size: 24px;
+            }
+            p{
+                font-size: 21px;
+            }
+            .areahold{
+                max-height: 100%;
+                overflow-y: scroll;
+            }
+            #graph{
+                background-color: #f0f0f0;
+                width: 600px;
+                height: 500px;
+                position: absolute;
+                right: 20px;
+                top: 100px;
+                box-shadow: 0 0 5px #aaa;
+                animation: windopen 0.5s ease forwards;
+                border-radius: 5px;
+                overflow: hidden;
+            }
+            @keyframes windopen {
+                0%{
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+                100%{
+                    opacity: 1;
+                }
+            }
+            @keyframes windclose {
+                0%{
+                    opacity: 1;
+                }
+                100%{
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+            }
+            #minimize{
+                width: 50px;
+                height: 30px;
+                float: right;
+            }
+            #minimize:hover{
+                background-color: #eee;
+            }
+            #content{
+                width: 100%;
+                height: calc(100% - 30px);
+            }
+            #canvas{
+                width: 100%;
+                height: calc(100% - 80px);
+            }
+            #descript{
+                width: calc(100% - 6px);
+                height: 74px;
+                resize: none;
+                font-family: Helvetica Neue, PingFangSC-Regular ! important;
+                font-size: 18px;
+            }
+            td{
+                border: solid 1px #000;
+                width: 70px;
+                text-align: center;
+                font-size: 24px;
+            }
+            exponent{
+                font-size: 15px;
+            }
+            expu{
+                font-size: 15px;
+                transform: translateY(-10px);
+                display: inline-block;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="page" pn="5">
+            <div class="areahold">
+                <div style="margin: 0 20px;">
+                    <h1>Inbreeding simulator</h1>
+                    <button id="generate">Generate a family</button>
+                    <p id="text"></p>
+                </div>
+            </div>
+        </div>
+        <div class="page" pn="4">
+            <div style="margin: 0 500px 0 20px; float: right; max-height: 100%; overflow-y: scroll;">
+                <h1>Coefficient of Inbreeding</h1>
+                <h3>About Coefficient of Inbreeding</h3>
+                <p>The problem related to inbreeding always involve the calculation of the Coefficient of Inbreeding.</p>
+                <p>Looking at the image. What is the Coefficient of Inbreeding of IV1 (represented by a 45% rotated rectangle) if his(her) grandfather (father's father) is also his great-grandfather (mother's father's father)?</p>
+                <h3>How to calculate Coefficient of Inbreeding (Only consider autosome)</h3>
+                <p>There are four cases of the offspring getting both homozygous genes from the same ancestor. The cases are A<exponent>1</exponent> (referring to the red gene), A<exponent>2</exponent> (referring to the blue gene), B<exponent>1</exponent> (referring to the green gene), B<exponent>2</exponent> (referring to the purple gene).</p>
+                <p>For each cases, the routes of inheriting are passing to II1 (father), IV1(self); and II2 (mother's father), III1 (mother), IV1(self). Those are total of 5 steps, each steps has a rate of inheriting of 50% (50% chances on failing to inherit), so the final possibility is 50% ^ 5 = 3.125%. There are totol of 4 cases, so the Coefficient of Inbreeding is 3.125% * 4 = 12.5%.</p>
+                <h3>Formula of Coefficient of Inbreeding</h3>
+                <p>To get the formula, we can break down the equation we just used.</p>
+                <p>50% ^ 5 * 4 = 12.5%</p>
+                <p>50% is the inherit rate for autosome, 5 are the steps for one loop (two routes that achieve to the same offspring, like a electic circuit), 4 are the loops.</p>
+                <p>However, not every scenario has the same steps for each loop. For example, if you want to calculate the Coefficient of Inbreeding for a random European royal family from the middle ages, things get complicated. The target offspirng's parents might not have the same parent. The father's mother and the mother's father are from the same mother, but different father. And one of the father and the mother belongs to the same parent. The steps of each route is different.</p>
+                <p>So we have to add up the steps individually for each route</p>
+                <p><em>F</em> = 50%<expu>k(1)</expu> + 50%<expu>k(2)</expu> + ... + 50%<expu>k(n)</expu></p>
+                <p>Where k(<em>i</em>) represents the individuals (steps) on the <em>i</em> th route.</p>
+                <p>Simplify with mathematics summation:</p>
+                <p><em>F</em> = Σ (<em>i</em>=1 -> <em>n</em>) 50%<expu>k(<em>i</em>)</expu></p>
+                <p>Where n represents the last route index.</p>
+                <p>If the ancestor was borned by inbreeding, you will then have to add his(her) Coefficient of Inbreeding.</p>
+                <p><em>F</em> = Σ (<em>i</em>=1 -> <em>n</em>) 50%<expu>k(<em>i</em>)</expu> * (1 + <em>Fi</em>)</p>
+            </div>
+            <img src="inbreeding_case.png" style="width: 480px; margin: 20px; position: absolute; right: 0;"/>
+        </div>
+        <div class="page" pn="3">
+            <div style="margin: 0 20px; max-height: 100%; overflow-y: scroll;">
+                <h1>Statistics explaining why is inbreeding harmful <empty style="color: #3060ff; cursor: pointer;">[1]</empty></h1>
+                <p>Accoding to the article, the possibility of a person finding a partner who carries the same genetic disease is very rare. It is 1‱ to below 10%. As mentioned, the rate of offspring having the genetic disorder is very low.</p>
+                <p>However, if the partner has a blood relationship with the person, it would be very different. Since they have the same ancestor, they might inherit the same disease from their ancestor. So they will have a higher rate of carring the same disease.</p>
+                <p>A person does not only have one disease gene, but 4 - 5 types on average. So the offspring of inbreeding is most likely defective.</p>
+                <p>The death rate of inbreeding offspring dying before the age of 20 is 8.1%, 8 times higher than normal offspring.</p>
+            </div>
+        </div>
+        <div class="page" pn="2">
+            <div style="margin: 0 500px 0 20px; float: right; max-height: 100%; overflow-y: scroll;">
+                <h1>How do the diseases pass onto the next generation</h1>
+                <p>If only one of the parents is the disease carrier, the possibility of the offspring having the genetic disorder (as homozygous dominant) is 0 - 25% (depending on who is the carrier) for x-linked and none for normal complete dominant.</p>
+                <p>If both of the parents are the carriers of the same disease, the possibility of the offspring having the genetic disorder is 50% for x-linked and 25% for normal complete dominant.</p>
+            </div>
+            <div style="position: absolute; margin: 20px; right: 0;">
+                <h3 style="width: 230px;">When <empty style="background-color: #ff0;">one</empty> of the parent is disease carrier:</h3>
+                <table>
+                    <tr>
+                        <td>M/F</td>
+                        <td>A</td>
+                        <td>a</td>
+                    </tr>
+                    <tr>
+                        <td>a</td>
+                        <td>Aa</td>
+                        <td>aa</td>
+                    </tr>
+                    <tr>
+                        <td>a</td>
+                        <td>Aa</td>
+                        <td>aa</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 0; width: 230px;">Complete dominance (autosome)</p>
+                <table>
+                    <tr>
+                        <td>M/F</td>
+                        <td>X<exponent>A</exponent></td>
+                        <td>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>X<exponent>a</exponent></td>
+                        <td>X<exponent>A</exponent>X<exponent>a</exponent></td>
+                        <td>X<exponent>a</exponent>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td style="background-color: #ff0;">X<exponent>A</exponent>Y</td>
+                        <td>X<exponent>a</exponent>Y</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 0; width: 230px;">X linked trait (Father is carrier)</p>
+                <table>
+                    <tr>
+                        <td>M/F</td>
+                        <td>X<exponent>a</exponent></td>
+                        <td>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>X<exponent>A</exponent></td>
+                        <td>X<exponent>A</exponent>X<exponent>a</exponent></td>
+                        <td>X<exponent>A</exponent>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td>X<exponent>a</exponent>Y</td>
+                        <td>X<exponent>a</exponent>Y</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 0; width: 230px;">X linked trait (Father is carrier)</p>
+            </div>
+            <div style="position: absolute; margin: 20px; right: 250px;">
+                <h3 style="width: 230px;">When <empty style="background-color: #ff0;">both</empty> of the parent are disease carrier:</h3>
+                <table>
+                    <tr>
+                        <td>M/F</td>
+                        <td>A</td>
+                        <td>a</td>
+                    </tr>
+                    <tr>
+                        <td>A</td>
+                        <td style="background-color: #ff0;">AA</td>
+                        <td>Aa</td>
+                    </tr>
+                    <tr>
+                        <td>a</td>
+                        <td>Aa</td>
+                        <td>aa</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 0; width: 230px;">Complete dominance (autosome)</p>
+                <table>
+                    <tr>
+                        <td>M/F</td>
+                        <td>X<exponent>A</exponent></td>
+                        <td>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>X<exponent>A</exponent></td>
+                        <td style="background-color: #ff0;">X<exponent>A</exponent>X<exponent>A</exponent></td>
+                        <td>X<exponent>A</exponent>X<exponent>a</exponent></td>
+                    </tr>
+                    <tr>
+                        <td>Y</td>
+                        <td style="background-color: #ff0;">X<exponent>A</exponent>Y</td>
+                        <td>X<exponent>a</exponent>Y</td>
+                    </tr>
+                </table>
+                <p style="margin-top: 0;">X linked trait</p>
+            </div>
+        </div>
+        <div class="page" pn="1">
+            <div class="areahold">
+                <div style="margin: 0 20px;">
+                    <h1>About Inbreeding</h1>
+                    <h3>What is inbreeding</h3>
+                    <p>Inbreeding is a type of offspring production that the parents are having a blood relationship.</p>
+                    <h3>Why is inbreeding harmful</h3>
+                    <p>The offspring will have a higher rate of getting a pair of homozygous allele with the blood related parents. If their parents are genetic carrier of the same disease, their children will have the possibility of getting the disease.</p>
+                </div>
+            </div>
+        </div>
+        <div class="page" pn="0">
+            <div style="background-color: #f0f0f0; padding: 5px; border-radius: 0 0 20px 20px; box-shadow: 0 0 5px 5px #ddd;">
+                <h1 style="margin-left: 20px;">Inbreeding - Cause and Consequence</h1>
+            </div>
+            <b style="position: absolute; right: 0; bottom: 0; margin: 30px;">Coby Qiu</b>
+        </div>
+        <script>
+            const sleep = ms => new Promise(res => setTimeout(res, ms));
+            document.onkeydown = async function(event){
+                if(event.key == 'q' && document.getElementsByClassName('page').length > 1){
+                    document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].style.animation = '0.3s ease close forwards';
+                    if(document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].getAttribute('pn') == '0'){
+                        const window = document.createElement('div');
+                        window.id = 'graph';
+                        document.body.append(window);
+                        window.innerHTML = `
+                        <div style="width: 100%; height: 30px; background-color: #fff;">
+                            <p style="font-size: 14px; margin: 6.5px 10px; display: inline-block;">Human Pedigree Graph</p>
+                            <div id="minimize"></div>
+                        </div>
+                        <div id="content">
+                            <div id="canvas"></div>
+                            <textarea id="descript" readonly></textarea>
+                        </div>
+                        `
+                        var sample = generate();
+                        sample[2].push({
+                            'gen': 3,
+                            'id': sample[2].length + 1,
+                            'male': true,
+                            'partner': [3, sample[2].length + 2],
+                            'father': (sample[2][sample[2].length - 1].father == undefined ? sample[2][sample[2].length - 2].father : sample[2][sample[2].length - 1].father),
+                            'mother': (sample[2][sample[2].length - 1].mother == undefined ? sample[2][sample[2].length - 2].mother : sample[2][sample[2].length - 1].mother),
+                            'disease': []
+                        }, {
+                            'gen': 3,
+                            'id': sample[2].length + 2,
+                            'male': false,
+                            'partner': [3, sample[2].length + 1],
+                            'father': (sample[2][sample[2].length - 1].father == undefined ? sample[2][sample[2].length - 2].father : sample[2][sample[2].length - 1].father),
+                            'mother': (sample[2][sample[2].length - 1].mother == undefined ? sample[2][sample[2].length - 2].mother : sample[2][sample[2].length - 1].mother),
+                            'disease': []
+                        });
+                        sample.push([{
+                            'gen': 4,
+                            'id': 1,
+                            'male': false,
+                            'partner': undefined,
+                            'father': [3, sample[2].length - 1],
+                            'mother': [3, sample[2].length],
+                            'disease': []
+                        }])
+                        document.getElementById('descript').innerText = 'In this scenario, the case of III' + sample[2][sample[2].length - 2].id + ' and III' + sample[2][sample[2].length - 1].id + ' is inbreeding, IV1 is the offspring.';
+                        document.getElementById('canvas').innerHTML = graph(sample);
+                        for(var i = 0; i < document.getElementsByClassName('areahold').length; i++){
+                            document.getElementsByClassName('areahold')[i].style.marginRight = '620px';
+                        }
+                    }else if(document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].getAttribute('pn') == '1'){
+                        document.getElementById('graph').style.animation = 'windclose 0.3s ease forwards';
+                    }else if(document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].getAttribute('pn') == '4'){
+                        document.getElementById('graph').style.animation = 'windopen 0.3s ease forwards';
+                        document.getElementById('canvas').innerHTML = '';
+                        document.getElementById('descript').innerText = '';
+                    }
+                    await sleep(500);
+                    document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].remove();
+                }
+            }
+            //找（创建）老伴
+            function createPartner(myGender, myGeneration, myID){
+                return {
+                    'gen': myGeneration,
+                    'id': myID + 1,
+                    'male': !myGender,
+                    'partner': [myGeneration, myID],
+                    'father': undefined,
+                    'mother': undefined,
+                    'disease': []
+                }
+            }
+            //造娃（父，母，续id）
+            function makeChild(father, mother, start, withPartner){
+                //offspring为返回项
+                const offspring = [];
+                var married = false;
+                for(var i = start; i < Math.random() * 2 + 1.5 + start; i++){
+                    //性别
+                    let gender = Math.random() < 0.5;
+                    //对象，50% undefined
+                    let partner;
+                    if(withPartner && (Math.random() < 0.5 || !married)){
+                        partner = createPartner(gender, Math.max(father['gen'], mother['gen']) + 1, i);
+                        married = true;
+                    }
+                    //添加小孩
+                    offspring.push({
+                        //代数为父母最大值+1，因为可能存在非同一代的乱伦
+                        'gen': Math.max(father['gen'], mother['gen']) + 1,
+                        'id': i,
+                        'male': gender,
+                        'partner': (partner == undefined ? undefined : [Math.max(father['gen'], mother['gen']) + 1, i + 1]),
+                        'father': [father['gen'], father['id']],
+                        'mother': [mother['gen'], mother['id']],
+                        'disease': []
+                    })
+                    if(partner != undefined){
+                        offspring.push(partner);
+                        i++;
+                    }
+                }
+                return offspring;
+            }
+            //生成
+            function generate(){
+                //定义祖父母
+                var result = [[{
+                    'gen': 1,
+                    'id': 1,
+                    'male': true,
+                    'partner': [1, 2],
+                    'father': undefined,
+                    'mother': undefined,
+                    'disease': []
+                }, {
+                    'gen': 1,
+                    'id': 2,
+                    'male': false,
+                    'partner': [1, 1],
+                    'father': undefined,
+                    'mother': undefined,
+                    'disease': []
+                }]];
+                result.push(makeChild(result[0][0], result[0][1], 1, true));
+                var offspring = [];
+                for(var i = 0; i < result[1].length; i++){
+                    //为防止重复，只在男性且有对象时创建offspring
+                    if(result[1][i].male && result[1][i].partner != undefined){
+                        const temp = makeChild(result[1][i], result[result[1][i].partner[0] - 1][result[1][i].partner[1] - 1], offspring.length + 1, false);
+                        for(var j = 0; j < temp.length; j++){
+                            offspring.push(temp[j]);
+                        }
+                    }
+                }
+                result.push(offspring);
+                return result;
+            }
+            function generate2gen(){
+                //定义祖父母
+                var result = [[{
+                    'gen': 1,
+                    'id': 1,
+                    'male': true,
+                    'partner': [1, 2],
+                    'father': undefined,
+                    'mother': undefined,
+                    'disease': []
+                }, {
+                    'gen': 1,
+                    'id': 2,
+                    'male': false,
+                    'partner': [1, 1],
+                    'father': undefined,
+                    'mother': undefined,
+                    'disease': []
+                }]];
+                result.push(makeChild(result[0][0], result[0][1], 1, false));
+                return result;
+            }
+            //绘制human pedigree
+            const romanNum = {1: 'I', 2: 'II', 3: 'III', 4: 'IV', 5: 'V'};
+            function graph(data){
+                var image = '<svg width="600" height="390">'
+                for(var i = 0; i < data.length; i++){
+                    for(var j = 0; j < data[i].length; j++){
+                        if(i != 0 && data[i][j].father != undefined){
+                            image += '<line x1="' + (30 + j * 60) + '" y1="' + (30 + i * 100) + '" x2="' + (30 + j * 60) + '" y2="' + (10 + i * 100) + '" stroke="#000"/>';
+                        }
+                        if(data[i][j].partner != undefined){
+                            //之所以不直接获取此object的partner是因为其对象可能不是同辈
+                            if(data[i][j].male && data[i][j].partner[0] <= data[i][j].gen){
+                                for(var k = 0; k < data[i].length; k++){
+                                    //partner匹配
+                                    if(data[i][k].partner != undefined && data[i][k].partner[0] == data[i][j].gen && data[i][k].partner[1] == data[i][j].id){
+                                        let y;
+                                        if(Math.abs(j - k) <= 1){
+                                            image += '<line x1="' + (30 + j * 60) + '" y1="' + (30 + i * 100) + '" x2="' + (30 + k * 60) + '" y2="' + (30 + i * 100) + '" stroke="#000"/>';
+                                            y = 30 + i * 100;
+                                        }else{
+                                            image += '<line x1="' + (30 + j * 60) + '" y1="' + (50 + i * 100) + '" x2="' + (30 + k * 60) + '" y2="' + (50 + i * 100) + '" stroke="#000"/><line x1="' + (30 + j * 60) + '" y1="' + (30 + i * 100) + '" x2="' + (30 + j * 60) + '" y2="' + (50 + i * 100) + '" stroke="#000"/><line x1="' + (30 + k * 60) + '" y1="' + (30 + i * 100) + '" x2="' + (30 + k * 60) + '" y2="' + (50 + i * 100) + '" stroke="#000"/>';
+                                            y = 50 + i * 100;
+                                        }
+                                        if(i < data.length - 1){
+                                            let left, right;
+                                            for(var l = 0; l < data[i + 1].length; l++){
+                                                if(data[i + 1][l].father != undefined && data[i + 1][l].father[0] == data[i][j].gen && data[i + 1][l].father[1] == data[i][j].id){
+                                                    left = l;
+                                                    break;
+                                                }
+                                            }
+                                            for(var l = data[i + 1].length - 1; l >= 0; l--){
+                                                if(data[i + 1][l].father != undefined && data[i + 1][l].father[0] == data[i][j].gen && data[i + 1][l].father[1] == data[i][j].id){
+                                                    right = l;
+                                                    break;
+                                                }
+                                            }
+                                            image += '<line x1="' + ((30 + j * 60) + (30 + k * 60)) / 2 + '" y1="' + y + '" x2="' + ((30 + left * 60) + (30 + right * 60)) / 2 + '" y2="' + (110 + i * 100) + '" stroke="#000"/><line x1="' + (30 + left * 60) + '" y1="' + (110 + i * 100) + '" x2="' + (30 + right * 60) + '" y2="' + (110 + i * 100) + '" stroke="#000"/>'
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        image += (data[i][j].male ? '<rect width="20" height="20" x="' + (20 + j * 60) + '" y="' + (20 + i * 100) +'" stroke="#000" fill="#fff"/>' : '<circle r="10" cx="' + (30 + j * 60) + '" cy="' + (30 + i * 100) +'" stroke="#000" fill="#fff"/>') + '<text text-anchor="middle" x="' + (30 + j * 60) + '" y="' + (35 + i * 100) +'">' + data[i][j].id + '</text>';
+                    }
+                    image += '<text x="580" y="' + (35 + i * 100) +'" text-anchor="end">' + romanNum[i + 1] + '</text>';
+                }
+                image += '</svg>'
+                return image;
+            }
+            document.getElementById('generate').onclick = function(){
+                var sample = generate2gen();
+                var hasOppositeGender = false;
+                var homogenPartner;
+                for(var i = 1; i < sample[1].length; i++){
+                    if(sample[1][i].male != sample[1][0].male){
+                        hasOppositeGender = true;
+                        homogenPartner = sample[1][i];
+                    }
+                }
+                if(!hasOppositeGender){
+                    homogenPartner = {
+                        'gen': 2,
+                        'id': sample[1].length + 1,
+                        'male': !sample[1][0].male,
+                        'partner': undefined,
+                        'father': [1, 1],
+                        'mother': [1, 2],
+                        'disease': []
+                    };
+                    sample[1].push(homogenPartner);
+                }
+                document.getElementById('canvas').innerHTML = graph(sample);
+                this.remove();
+                document.getElementById('text').innerText = 'Select a partner for II1:'
+                document.getElementById('text').parentNode.innerHTML += `
+                <select id="selector">
+                    <option>Select a partner</option>
+                    <option>` + (sample[1][0].male ? 'I2' : 'I1') + `</option>
+                    <option>` + romanNum[homogenPartner['gen']] + homogenPartner['id'] + `</option>
+                </select>`;
+                document.getElementById('selector').onchange = function(){
+                    document.getElementsByTagName('option')[0].remove();
+                    console.log(this.selectedIndex);
+                }
+            }
+        </script>
+    </body>
+</html>
