@@ -131,6 +131,9 @@
                 border: 2px dashed #fff;
                 outline: 2px solid #000;
             }
+            button{
+                font-size: 21px;
+            }
         </style>
     </head>
     <body>
@@ -368,6 +371,9 @@
                         document.getElementById('descript').innerText = '';
                     }
                     await sleep(500);
+                    if(document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].getAttribute('pn') == '5'){
+                        document.getElementById('graph').remove();
+                    }
                     document.getElementsByClassName('page')[document.getElementsByClassName('page').length - 1].remove();
                 }
             }
