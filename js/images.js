@@ -137,8 +137,10 @@ async function imageDetails(url){
         document.getElementsByClassName('imageDetails')[0].style.backgroundColor = '#e9e9e8';
         document.getElementsByClassName('details-img')[0].src = 'img/info.circle.fill.svg';
         const tags = await ExifReader.load(url);
-        const date = new Date(tags['DateCreated']['value'])
-        document.getElementById('imgDetails').innerHTML = '<b>设备</b><p>' + tags['LensModel']['value'] + '</p><b>时间</b><p>' + date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '</p><b>位置（中国大陆不可用）</b><div id="map"></div>'
+        const date = (tags['DateCreated'] == undefined ? undefined : new Date(tags['DateCreated']['value']))
+        const dateVal = (date == undefined ? '----年--月--日 --:--:--' : date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds())
+        const camera = (tags['LensModel'] == undefined ? '--' : tags['LensModel']['value'])
+        document.getElementById('imgDetails').innerHTML = '<b>设备</b><p>' + camera + '</p><b>时间</b><p>' + dateVal + '</p><b>位置（中国大陆不可用）</b><div id="map"></div>'
         if(tags['GPSLatitude'] == undefined){
             document.getElementById('map').innerHTML = '<p>照片不包含位置信息，或位置信息已被去除</p>';
         }else{
