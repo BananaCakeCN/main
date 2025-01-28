@@ -15,7 +15,7 @@ function getCookie(cname){
      }
     return "";
 }
-fetch('https://api.uomg.com/api/visitor.info?skey=114514')
+fetch('http://api.uomg.com/api/visitor.info?skey=114514')
     .then(function(response) {
         if (response.ok) {
             return response.json();
