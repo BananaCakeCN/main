@@ -15,7 +15,7 @@ function getCookie(cname){
      }
     return "";
 }
-fetch('http://api.uomg.com/api/visitor.info?skey=114514')
+fetch('https://2025.ipchaxun.com/')
     .then(function(response) {
         if (response.ok) {
             return response.json();
