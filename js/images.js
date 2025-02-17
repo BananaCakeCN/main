@@ -155,3 +155,12 @@ async function imageDetails(url){
         document.getElementsByClassName('details-img')[0].src = 'img/info.circle.svg';
     }
 }
+if(new URLSearchParams(window.location.search).get('id') != null){
+    imageIsOpen = true;
+    document.querySelector('.photoViewer').style.cssText = 'height: 100%; width: 100%; background-color: #FFF; display: flex;';
+    const root = (new URLSearchParams(window.location.search).get('album') == null ? 'photos/' : new URLSearchParams(window.location.search).get('album') + '/');
+    document.querySelector('.photoViewer').innerHTML = '<img style="max-height: ' + (document.documentElement.clientHeight - 116) + 'px;" src="' + getUrl(root, new URLSearchParams(window.location.search).get('id')) + '" class="ViewerImage"></img><div class="imageTop"><p class="imageInfo">' + images[new URLSearchParams(window.location.search).get('id')][1] + '</p><p class="imageInfo2">' + images[new URLSearchParams(window.location.search).get('id')][0] + '</p><div class="button1 return imageReturn" onclick="closeImage()"><img class="return-img2" src="img/return.svg"></div><div class="button1 imageDetails" onclick="imageDetails(`' + root + '`, ' + new URLSearchParams(window.location.search).get('id') + ')"><img class="details-img" src="img/info.circle.svg"></div></div><div id="imgDetails" style="width: 0; height: 0;"></div>';
+    if(document.documentElement.clientWidth < document.documentElement.clientHeight){
+        document.querySelector('.ViewerImage').style.cssText = 'max-height: ' + (document.documentElement.clientHeight - 166) + 'px; bottom: 50px;';
+    }
+}
