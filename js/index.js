@@ -312,3 +312,12 @@ function closeSelector(){
 if(history.length<=1){
     document.getElementById('return').innerHTML = '<div class="return"><img class="return-img" src="img/return2.svg"></div><div class="return2"><img class="return-img" src="img/return2.svg"></img></div>';
 }
+document.onkeydown = function(){
+    if(event.key == 'e'){
+        document.onkeydown = function(){
+            if(event.key == 's'){
+                 window.location.href = "https://fakesd38.bananacake.top";
+            }
+        }
+    }
+}
