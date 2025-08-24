@@ -15,7 +15,7 @@ function getCookie(cname){
      }
     return "";
 }
-fetch('https://2025.ipchaxun.com/')
+fetch('https://1.1.1.1/cdn-cgi/trace')
     .then(function(response) {
         if (response.ok) {
             return response.json();
