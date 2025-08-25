@@ -18,7 +18,7 @@ function getCookie(cname){
 fetch('https://1.1.1.1/cdn-cgi/trace')
     .then(function(response) {
         if (response.ok) {
-            return response.json();
+            return response.text();
         }
         throw new Error('请求错误');
     })
