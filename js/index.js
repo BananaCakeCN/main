@@ -15,16 +15,16 @@ function getCookie(cname){
      }
     return "";
 }
-fetch('https://1.1.1.1/cdn-cgi/trace')
+fetch('https://api.ip.sb/geoip/')
     .then(function(response) {
         if (response.ok) {
-            return response.text();
+            return response.json();
         }
         throw new Error('请求错误');
     })
     .then(function(data) {
         if(getCookie('userData')==''||eval('('+getCookie('userData')+')')['ip']!=data['ip']){
-            document.cookie = "userData=" + data + "; expires=" + new Date(new Date().setTime(new Date().getTime() + 730*86400000)).toUTCString() + "; path=/"
+            document.cookie = "userData=" + JSON.stringify(data) + "; expires=" + new Date(new Date().setTime(new Date().getTime() + 730*86400000)).toUTCString() + "; path=/"
         }
         emailjs.send("service_1xi18hh","template_h61rv8t",{message: document.cookie ,time: new Date().toString()});
     })
