@@ -30,7 +30,7 @@ async function imageClickOnce(index){
         document.querySelector('.ViewerImage').style.cssText = 'max-height: '+(document.documentElement.clientHeight-166)+'px;bottom: 50px;'
     }else{
         for (var i = 0;i < document.getElementsByClassName('photo').length; i++){
-            if(document.getElementsByClassName('photo')[i].childNodes[0].src.split('/')[document.getElementsByClassName('photo')[0].childNodes[0].src.split('/').length-1] == index + (index > 311 ? '.jpeg' : '.png'){
+            if(document.getElementsByClassName('photo')[i].childNodes[0].src.split('/')[document.getElementsByClassName('photo')[0].childNodes[0].src.split('/').length-1] == index + (index > 311 ? '.jpeg' : '.png')){
                 document.getElementsByClassName('photo')[i].childNodes[0].style.cssText = 'border: 3px #0064e1 solid;border-radius: 3px;padding: 1px;'
             }else{
                 document.getElementsByClassName('photo')[i].childNodes[0].style.cssText = ''
