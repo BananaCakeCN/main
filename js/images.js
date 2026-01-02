@@ -137,7 +137,7 @@ async function imageDetails(url){
         document.getElementsByClassName('imageDetails')[0].style.backgroundColor = '#e9e9e8';
         document.getElementsByClassName('details-img')[0].src = 'img/info.circle.fill.svg';
         const tags = await ExifReader.load(url);
-        const date = (tags['DateCreated'] == undefined ? undefined : new Date(tags['DateCreated']['value']))
+        const date = (tags['DateTimeOriginal'] == undefined ? undefined : new Date(tags['DateTimeOriginal'].description.replace(/^(\d{4}):(\d{2}):(\d{2})/, "$1-$2-$3").replace(" ", "T") + 'Z'));
         const dateVal = (date == undefined ? '----年--月--日 --:--:--' : date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + date.getDate() + '日 ' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds())
         const camera = (tags['LensModel'] == undefined ? '--' : tags['LensModel']['value'])
         document.getElementById('imgDetails').innerHTML = '<b>设备</b><p>' + camera + '</p><b>时间</b><p>' + dateVal + '</p><b>位置（中国大陆不可用）</b><div id="map"></div>'
@@ -146,12 +146,13 @@ async function imageDetails(url){
         }else{
             var map;
             if(Number.isFinite(tags['GPSLatitude']['description'])){
-                map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'] == "North latitude" ? tags['GPSLatitude']['description']: 0 - tags['GPSLatitude']['description']), (tags['GPSLongitudeRef']['description'] == "North latitude" ? tags['GPSLongitude']['description']: 0 - tags['GPSLongitude']['description'])], 13);
+                map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'] == "North latitude" ? tags['GPSLatitude']['description']: 0 - tags['GPSLatitude']['description']), (tags['GPSLongitudeRef']['description'] == "West longitude" ? 0 - tags['GPSLongitude']['description'] : tags['GPSLongitude']['description'])], 13);
+                L.marker([(tags['GPSLatitude']['description'] == "North latitude" ? tags['GPSLatitude']['description']: 0 - tags['GPSLatitude']['description']), (tags['GPSLongitudeRef']['description'] == "West longitude" ? 0 - tags['GPSLongitude']['description'] : tags['GPSLongitude']['description'])]).addTo(map);
             }else{
                 map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)], 13);
+                L.marker([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)]).addTo(map);
             }
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', ).addTo(map);
-            L.marker([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)]).addTo(map);
         }
     }else{
         document.getElementById('imgDetails').style.cssText = 'width: 0px; height: 0px;';
