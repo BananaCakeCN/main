@@ -144,7 +144,12 @@ async function imageDetails(url){
         if(tags['GPSLatitude'] == undefined){
             document.getElementById('map').innerHTML = '<p>照片不包含位置信息，或位置信息已被去除</p>';
         }else{
-            var map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)], 13);
+            var map;
+            if(Number.isFinite(tags['GPSLatitude']['description'])){
+                map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'] == "North latitude" ? tags['GPSLatitude']['description']: 0 - tags['GPSLatitude']['description']), (tags['GPSLongitudeRef']['description'] == "North latitude" ? tags['GPSLongitude']['description']: 0 - tags['GPSLongitude']['description'])], 13);
+            }else{
+                map = L.map('map', {attributionControl: false}).setView([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)], 13);
+            }
             L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', ).addTo(map);
             L.marker([(tags['GPSLatitude']['description'].substring(tags['GPSLatitude']['description'].length - 1) == 'S' ? '-' : '') + tags['GPSLatitude']['description'].substring(0, tags['GPSLatitude']['description'].length - 1), (tags['GPSLongitude']['description'].substring(tags['GPSLongitude']['description'].length - 1) == 'W' ? '-' : '') + tags['GPSLongitude']['description'].substring(0, tags['GPSLongitude']['description'].length - 1)]).addTo(map);
         }
